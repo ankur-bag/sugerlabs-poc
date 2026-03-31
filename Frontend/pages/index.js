@@ -29,11 +29,15 @@ export default function LandingPage() {
 
   useEffect(() => {
     if (isLoaded && isSignedIn && userId) {
-      fetch(`http://localhost:8000/api/user/${userId}`)
-        .then(res => {
+      const checkUser = async () => {
+        try {
+          const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/${userId}`);
           if (res.status === 404) router.push('/onboarding');
-        })
-        .catch(err => console.error("Error checking user:", err));
+        } catch (err) {
+          console.error("Error checking user:", err);
+        }
+      };
+      checkUser();
     }
   }, [isLoaded, isSignedIn, userId, router]);
 

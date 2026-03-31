@@ -38,7 +38,7 @@ export default function Reflect() {
         // [GSoC Trigger Simulation] 
         // This fires when project is paused or saved: onSave() -> POST /start-reflection
         // 1. Start reflection session
-        const startRes = await fetch("http://localhost:8000/api/start-reflection", {
+        const startRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/start-reflection`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ clerk_id: userId, activity_type: activity, project_name: project })
@@ -53,7 +53,7 @@ export default function Reflect() {
         setSessionId(sid);
         
         // 2. Fetch first question
-        const qRes = await fetch("http://localhost:8000/api/next-question", {
+        const qRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/next-question`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ session_id: sid })
@@ -92,14 +92,14 @@ export default function Reflect() {
 
     try {
       // 1. Submit response
-      await fetch("http://localhost:8000/api/submit-response", {
+      await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/submit-response`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ session_id: sessionId, content: userMessage })
       });
       
       // 2. Get next question
-      const qRes = await fetch("http://localhost:8000/api/next-question", {
+      const qRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/next-question`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ session_id: sessionId })
@@ -126,7 +126,7 @@ export default function Reflect() {
   const finishReflection = async (sid) => {
     setIsTyping(true);
     try {
-      const sumRes = await fetch("http://localhost:8000/api/summarize", {
+      const sumRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/summarize`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ session_id: sid })

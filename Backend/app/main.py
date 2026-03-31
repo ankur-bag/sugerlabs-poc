@@ -11,10 +11,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Sugar Labs AI Reflection API", lifespan=lifespan)
 
-# Configure CORS for Next.js frontend
+# Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

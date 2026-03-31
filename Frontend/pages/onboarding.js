@@ -64,7 +64,15 @@ export default function Onboarding() {
         skillLevel: formData.skillLevel
       };
 
-      const res = await fetch("http://localhost:8000/api/onboarding", {
+      // 1. Check if user already exists
+      const checkRes = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/${user.id}`);
+      if (checkRes.ok) {
+        router.push("/");
+        return;
+      }
+
+      // 2. Otherwise create profile
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/onboarding`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dbPayload)

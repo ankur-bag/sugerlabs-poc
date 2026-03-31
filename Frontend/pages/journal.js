@@ -18,7 +18,7 @@ export default function Journal() {
 
   useEffect(() => {
     if (!isLoaded || !isSignedIn || !userId) return;
-    fetch(`http://localhost:8000/api/reflections/${userId}`)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/reflections/${userId}`)
       .then(res => res.json())
       .then(data => {
         setEntries(data.entries || []);
