@@ -11,10 +11,15 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Sugar Labs AI Reflection API", lifespan=lifespan)
 
+import os
+
 # Configure CORS
+# Read allowed origins from environment variable, fallback to local development URLs
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins if allowed_origins != ["*"] else ["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
