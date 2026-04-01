@@ -36,23 +36,8 @@ This project introduces an AI-powered reflection workflow that:
 ## System Architecture
 
 Sugar Reflect Buddy System Architecture
-Reflection UI
-Student (Child User)
-State Manager
-Input Handler
-Response Processor
-Reflection Controller
-Session Manager
-Prompt Engine
-User Data Collection
-Session Storage
-Reflection Entries Storage
-Sugar Journal System
-API Gateway
-LLM Model
-Output Formatter<img width="1098" height="841" alt="image" src="https://github.com/user-attachments/assets/f6d3d1a2-8c54-40e1-b8ef-c858de41310c" />
 
-
+Output Formatter<img width="1098" height="841" alt="image" src="https://github.com/user-attachments/assets/f3ccb202-0679-41a2-bda3-91ecfb245f67" />
 
 
 ## Core Components
