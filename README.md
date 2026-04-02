@@ -56,7 +56,7 @@ Instead of a blank form, the learner is walked through each stage with AI-genera
 
 ## System Architecture
 
-![Sugar Reflect Buddy System Architecture](./assets/architecture.png)
+![Sugar Reflect Buddy System Architecture](https://github.com/user-attachments/assets/f3ccb202-0679-41a2-bda3-91ecfb245f67)
 
 The system is organized into 5 core components:
 
