@@ -14,6 +14,13 @@ It demonstrates how AI can be used to scaffold reflection and improve learning o
 
 ---
 
+## Links
+
+- **Frontend:** https://gsoc-sugerlabs-poc.vercel.app/
+- **Backend:** https://gsoc-sugerlabs-poc.onrender.com/docs
+
+---
+
 ## Problem Statement
 
 The current Sugar Journal allows users to record activities but does not provide structured guidance for reflection. This leads to:
