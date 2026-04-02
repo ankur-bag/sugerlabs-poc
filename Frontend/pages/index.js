@@ -5,8 +5,8 @@ import Link from "next/link";
 import { FaCode } from "react-icons/fa";
 import { IoMdColorPalette } from "react-icons/io";
 import { FiMusic } from "react-icons/fi";
-import { LuNotepadText } from "react-icons/lu";
 import { useAuth, SignInButton } from "@clerk/nextjs";
+import { LuNotepadText, LuBrain, LuStar, LuUser } from "react-icons/lu";
 
 const activities = [
   { id: "Coding", title: "Coding", desc: "Reflect on your logic, debugging, and creative problem solving.", icon: <FaCode /> },
@@ -96,6 +96,29 @@ export default function LandingPage() {
               Journals
             </button>
           </motion.div>
+        </motion.div>
+
+        {/* Feature Highlights Grid */}
+        <motion.div 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.6, duration: 1 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10 mt-24 md:mt-32 w-full max-w-5xl mx-auto px-4"
+        >
+          {[
+            { icon: <LuBrain className="text-gray-900" />, title: "AI Buddy", text: "A gentle mentor that uses Kolb's cycle to guide your reflection with natural dialogue." },
+            { icon: <LuStar className="text-gray-900" />, title: "Star Metrics", text: "Get clear, star-rated feedback for every stage, with detailed AI reasoning personalized to you." },
+            { icon: <LuUser className="text-gray-900" />, title: "Personal Journals", text: "Your thoughts are turned into 3-5 sentence first-person stories, creating a rich record of growth." }
+          ].map((feature, i) => (
+            <div key={i} className="flex flex-col items-center p-8 rounded-[2rem] bg-gray-50/50 border border-gray-100/50 hover:bg-white hover:shadow-xl hover:border-gray-200 transition-all duration-500 group">
+              <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                {feature.icon}
+              </div>
+              <h4 className="text-[12px] font-bold uppercase tracking-widest text-gray-900 mb-3">{feature.title}</h4>
+              <p className="text-[11px] text-gray-400 font-light text-center leading-relaxed px-2">{feature.text}</p>
+            </div>
+          ))}
         </motion.div>
       </section>
 

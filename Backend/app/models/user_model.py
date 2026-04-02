@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime, timezone
 
@@ -12,6 +12,7 @@ class UserOnboarding(BaseModel):
 
 class UserInDB(UserOnboarding):
     id: Optional[str] = Field(alias="_id", default=None)
+    last_memory: Optional[Dict[str, Any]] = None # Stores the save_to_memory block from last session
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     model_config = ConfigDict(
@@ -23,8 +24,11 @@ class UserInDB(UserOnboarding):
                 "interests": ["coding", "music"],
                 "currentFocus": "coding",
                 "skillLevel": "beginner",
-                "thinkingStyle": "guided",
-                "goal": "build games"
+                "last_memory": {
+                    "activity": "building a game",
+                    "insight": "loops are powerful",
+                    "experimentation": "add music next time"
+                }
             }
         }
     )

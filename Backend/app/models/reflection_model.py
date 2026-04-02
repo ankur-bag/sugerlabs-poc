@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, ConfigDict, Field
 from datetime import datetime, timezone
 
@@ -16,6 +16,8 @@ class ReflectionSession(BaseModel):
     mode: str # "guided", "creative", "critical"
     messages: List[Message] = []
     summary: Optional[str] = None
+    quality_score: Optional[Dict[str, Any]] = None # Holds the structured evaluation
+    past_reflection: Optional[Dict[str, Any]] = None # Injected context from previous session
     createdAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     updatedAt: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 

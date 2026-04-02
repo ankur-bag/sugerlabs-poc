@@ -53,16 +53,19 @@ async def start_reflection(req: StartReflectionRequest):
     user_dict["_id"] = str(user_dict["_id"])
     user = UserInDB(**user_dict)
     
+    # Store user's last memory on the session to inject into AI context
+    past_reflection = getattr(user, "last_memory", None)
+
     session = ReflectionSession(
         user_id=req.clerk_id,
         project_name=req.project_name,
         activity_type=req.activity_type,
         current_stage="experience",
-        mode=req.mode
+        mode=req.mode,
+        past_reflection=past_reflection
     )
     
     session_dict = session.model_dump(by_alias=True, exclude_none=True)
-    # Insert active conversational state into 'sessions' collection
     result = await db.sessions.insert_one(session_dict)
     
     session.id = str(result.inserted_id)
@@ -105,7 +108,17 @@ async def summarize(req: SummarizeRequest):
     db = get_database()
     session, user = await get_session_and_user(req.session_id)
     
-    summary_text = await generate_summary(session, user)
+    # generate_summary now returns detailed V2.1 dict
+    summary_data = await generate_summary(session, user)
+    
+    journal_entry = summary_data.get("journal_entry", "")
+    quality_score = {
+        "scores": summary_data.get("scores", {}),
+        "reasoning": summary_data.get("reasoning", {}),
+        "feedback": summary_data.get("feedback", "")
+    }
+    
+    save_to_memory = summary_data.get("save_to_memory", {})
     
     from datetime import datetime, timezone
     
@@ -123,18 +136,33 @@ async def summarize(req: SummarizeRequest):
         "user_id": session.user_id,
         "projectName": getattr(session, "project_name", "Untitled Project"),
         "activityType": session.activity_type,
-        "summary": summary_text,
+        "summary": journal_entry, # Use first-person summary
+        "quality_score": quality_score,
         "createdAt": datetime.now(timezone.utc).isoformat(),
         "reflections": reflections_arr
     })
     
+    # Update user with the new memory for the next session
+    if save_to_memory:
+        await db.users.update_one(
+            {"clerkId": session.user_id},
+            {"$set": {"last_memory": save_to_memory}}
+        )
+    
     # Update active session to show it was summarized
     await db.sessions.update_one(
         {"_id": ObjectId(req.session_id)},
-        {"$set": {"summary": summary_text, "current_stage": "done"}}
+        {"$set": {
+            "quality_score": quality_score, 
+            "summary": journal_entry,
+            "current_stage": "done"
+        }}
     )
     
-    return {"summary": summary_text}
+    return {
+        "summary": journal_entry, 
+        "quality_score": quality_score
+    }
 
 @router.get("/reflections/{clerk_id}")
 async def get_reflections(clerk_id: str):
