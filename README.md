@@ -99,7 +99,7 @@ Journal entry is triggered
         ↓
 Reflection session starts
         ↓
-Stage-aware prompt is generated (Gemini 2.0 Flash)
+Stage-aware prompt is generated (Gemini 2.5 Flash)
         ↓
 User responds
         ↓
